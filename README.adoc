@@ -14,6 +14,7 @@ Saber Skirmish features:
 
 == Site Map
 
-[Overview of gameplay](https://www.youtube.com/watch?v=YUS0_jPUu_Q)  
+link:https://www.youtube.com/watch?v=YUS0_jPUu_Q[Overview of gameplay]
+
 * <<GamePoster#, Game Poster>>
 * <<DeveloperGuide#, Developer Guide>>

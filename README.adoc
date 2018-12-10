@@ -1,6 +1,8 @@
 = Saber Skirmish
 ifdef::env-github,env-browser[:relfileprefix: docs/]
 
+*This repository is for reference only*
+
 Saber Skirmish is an arcade-style rail-shooter genre game, made in Unity 2018 2.8f Personal Edition.
 Saber Skirmish was built for `Windows 8+` desktop and `Android 4.4+`, and is mainly written in `C#`.
 

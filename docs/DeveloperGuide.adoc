@@ -1,0 +1,232 @@
+= Saber Skirmish - Developer Guide
+:toc:
+:sectnums:
+:imagesDir: images
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:warning-caption: :warning:
+:experimental:
+endif::[]
+
+== About
+Saber Skirmish is an arcade-style rail-shooter genre game, made in Unity 2018 2.8f Personal Edition.
+Saber Skirmish was built for `Windows 8+` desktop and `Android 4.4+`, and is mainly written in `C#`.
+This project is done by Yu Hong Herald and Yu Pei Henry under *CS3241R*, an exploratory
+extension of a computer graphics module taught by Dr Alan Cheng from NUS.
+
+Saber Skirmish features:
+
+* *Interactive controls over a lightsaber.* Able to move lightsaber between 3 position, swing with 360 freedom along 1 axis (perpendicular to the ground).
+* *Variety of enemies.* Some enemies will attack at close/far range. The player may deflect enemy missiles and fight melee or ranged against stormtroopers.
+* *Challenging boss.* Challenge yourself against the final boss, Darth Vader. There is some simple AI mechanism behind the boss that defines his behavior.
+* *Score mechanism.* Get assessed on your ability with a combo-driven scoring system. You will be awarded titles for 5k and 10k score (Padawan/Jedi Knight/Grandmaster).
+* *Narration, sounds and music.* Enjoy storyline narration, sound effects and music.
+
+To play the game, the player runs the server application on the desktop and the client application on the android phone.
+Both devices must be connected to the same network. The player
+then scans the generated QR code on the desktop to connect the devices. The application is built following the thin client - fat server model.
+
+== Quickstart
+This section is for new developers who want to build their game.
+
+=== Phone client build
+The current phone client build does not need to be modified. You can build the scene NewController for your
+preferred mobile platform by going to File>Build Settings and following the illustration below.
+
+.Diagram of Unity build settings
+image::android-build.png[width="800"]
+
+=== Desktop server build
+The game content is rendered on the server. To start developing the game, you will need to create a few GameObjects in the Editor:
+
+.Class Diagram of scene objects
+image::class.png[width="800"]
+
+[TIP]
+You can use the structure provided in the example scene.
+
+Events in the game are sequenced by `Scenes`, managed by the `SceneEngine`.
+To change the sequence the scenes appear in the editor, you can reorder the scenes by selecting `SceneEngine`.
+
+.Diagram of editing the SceneEngine
+image::sceneEngine.png[width="800"]
+
+Scenes uses customizable assets. To change the assets used in each `Scene` in the editor, select the `Scene`,
+then select the desired assets for the respective fields.
+
+.Diagram of editing the Scene
+image::scene.png[width="800"]
+
+Music and voicing are managed by `MusicManager`. To change the music and voice clips used in the editor,
+select `MusicManager`, then select the desired clips for the respective fields.
+
+.Diagram of editing the MusicManager
+image::musicManager.png[width="800"]
+
+UI instructions are managed by `CollectiveInstructions`. To change the instructions shown in the editor,
+select CollectiveInstructions, then select the desired instruction for the respective fields.
+
+.Diagram of editing the CollectiveInstructions
+image::collectiveInstructions.png[width="800"]
+
+== Creating new classes
+This section is for developers who are familiar with how to customize the game. Please see the section on quickstart to get familiarized.
+
+=== Creating a new scene
+To create a new Scene, you have to extend the `Scene` class to implement its behaviors.
+Currently, there are 2 types of scenes, `Scene` and `LevelScene`. It is recommended to extend
+`LevelScene` for levels and `Scene` for other types of Scenes.
+
+Pay close attention to the scene’s status. For the scene to be integrated with the `SceneManager`,
+it is important to update the status in `OpenScene` and `CloseScene`.
+
+[source]
+----
+public override void OpenScene() {
+	//…
+	status = Status.Open; // or Status.Opening
+}
+
+public override void CloseScene() {
+	//…
+	status = Status.Close;
+}
+----
+
+[TIP]
+Remember to add `[SerializeField]` for fields that can be customized so that they will appear in the editor.
+
+=== Creating new entities
+To create a new entity, you have to extend the `AEntity` class to implement its behaviors.
+Currently, there are are 2 types of entities, `AEntity` and `HealthBarEntity`. It is recommended to extend
+`HealthBarEntity` for bosses, and `AEntity` for other types of enemies.
+
+=== Creating new scene objects
+Currently, the only scene object that has a behavior is the `Door`.
+
+[TIP]
+You can *refer* to the `Door` and `BlastDoor` class on how to create extendable scene objects.
+
+=== Creating new instructions
+An `ArcadeInsruction` is comprised of an `Instruction`, a `DirectionalArrow` and a `VirtualPhone`,
+and they are all optional, depending on what you want to show.
+
+`Instruction` is used to display animated text in the 3D scene, while `DirectionalArrow` and `VirtualPhone`
+are used to signpost the player to carry out a certain action.
+
+To create a new instruction, you have to create a new `Instruction`, `DirectionalArrow` and `VirtualPhone`
+in the editor.
+
+[TIP]
+*Refer* to the instructions on adding the classes to the scene in the editor.
+
+[TIP]
+Remember to modify the enum class and Set method to integrate into the `CollectiveInstructions`.
+
+[source]
+----
+public enum InstType {
+//…
+NEW_INST,
+//...
+}
+
+public void SetInstruction(InstType type) {
+	//…
+	case(InstType.NEW_INST):
+	SetInstruction(newInst);
+	break;
+	//...
+}
+----
+
+=== Creating new music or voicing
+To create new music or voicing, you have to add an `AudioSource` to your scene.
+
+Step 1. Add an `AudioSource` to your scene. *Refer* to the instructions on adding the classes to the scene in the editor.
+
+Step 2. Select the sound clip you want to play
+
+Step 3. Set other properties such as volume, loop etc. in the inspector.
+
+.Diagram of setting up an AudioSource
+image::audioSource.png[width="800"]
+
+[TIP]
+Remember to modify the enum class and Set method to integrate into the `MusicManager`.
+
+[source]
+----
+public enum MUSIC {
+//…
+NEW_MUSIC,
+//...
+}
+
+public enum SOUND {
+//…
+NEW_SOUND,
+//...
+}
+
+public void SetMusic(MUSIC musicType) {
+	//…
+	case(MUSIC.NEW_MUSIC):
+	SetMusic(newMusic);
+	break;
+	//...
+}
+
+public void SetMusic(VOICE voiceType) {
+	//…
+	case(VOICE.NEW_VOICE):
+	SetMusic(newVoice);
+	break;
+	//...
+}
+----
+
+== Adding the classes to the scene in the editor
+This section is for developers who want to add custom classes into the scene.
+For creating custom classes, *refer* to the previous section.
+
+To add a class in the editor:
+
+Step 1. Create an empty `GameObject` at your preferred location.
+
+.Diagram of adding an empty GameObject
+image::createEmptyObject.png[width="800"]
+
+Step 2. Add your class as a component to the `GameObject`.
+
+You should now be able to select the class in the editor fields. *Refer* to quickstart for more information.
+
+== Project overview
+
+image::architecture.png[width="800"]
+
+Saber Skirmish is made of 4 main components: Scene, Connection, UI and Util.
+
+* *Scene*: Contains classes that manage and represent objects in 3D space of the game.
+* *Connection*: Contains classes that manage client-server connection.
+* *UI*: Contains classes that draws and formats UI content.
+* *Util*: Contains common methods for manipulating data types.
+
+[appendix]
+== Case study - Lightsaber escape
+
+In this similar game, the player connects his mobile phone to an online server.
+The player then interacts with the game by tilting the phone sideways to deflect lasers from stormtroopers.
+
+Features:
+
+* Smartphone controller
+* Basic deflection combat mechanic
+
+*Why Saber Skirmish*
+
+* More control functionality - Moving between 3 positions and swinging, co-ordinated sounds, damage enemies only if sufficient velocity.
+* More combat variation - Close/far range enemies have different killing requirements. Use of enemy spawn patterns and events to make level more exciting.
+* Boss fight -  Complex enemy with more intelligent attacks.
+* Score reward system - Players earn titles based on their in-game performance.

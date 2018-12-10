@@ -1,0 +1,3 @@
+ifdef::env-github[]
+image::docs/images/Saber Skirmish Poster.png[width="1024"]
+endif::[]

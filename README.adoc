@@ -1,0 +1,19 @@
+= Saber Skirmish
+ifdef::env-github,env-browser[:relfileprefix: docs/]
+
+Saber Skirmish is an arcade-style rail-shooter genre game, made in Unity 2018 2.8f Personal Edition.
+Saber Skirmish was built for `Windows 8+` desktop and `Android 4.4+`, and is mainly written in `C#`.
+
+Saber Skirmish features:
+
+* *Interactive controls over a lightsaber.* Able to move lightsaber between 3 position, swing with 360 freedom along 1 axis (perpendicular to the ground).
+* *Variety of enemies.* Some enemies will attack at close/far range. The player may deflect enemy missiles and fight melee or ranged against stormtroopers.
+* *Challenging boss.* Challenge yourself against the final boss, Darth Vader. There is some simple AI mechanism behind the boss that defines his behavior.
+* *Score mechanism.* Get assessed on your ability with a combo-driven scoring system. You will be awarded titles for 5k and 10k score (Padawan/Jedi Knight/Grandmaster).
+* *Narration, sounds and music.* Enjoy storyline narration, sound effects and music.
+
+== Site Map
+
+[Overview of gameplay](https://www.youtube.com/watch?v=YUS0_jPUu_Q)  
+* <<GamePoster#, Game Poster>>
+* <<DeveloperGuide#, Developer Guide>>
